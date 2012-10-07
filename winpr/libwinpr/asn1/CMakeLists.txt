@@ -21,6 +21,10 @@ set(MODULE_PREFIX "WINPR_ASN1")
 set(${MODULE_PREFIX}_SRCS
 	asn1.c)
 
+if(MSVC AND (NOT WITH_MONOLITHIC_BUILD))
+	set(${MODULE_PREFIX}_SRCS ${${MODULE_PREFIX}_SRCS} module.def)
+endif()
+
 if(WITH_MONOLITHIC_BUILD)
 	add_library(${MODULE_NAME} OBJECT ${${MODULE_PREFIX}_SRCS})
 else()
@@ -36,3 +40,7 @@ else()
 endif()
 
 set_property(TARGET ${MODULE_NAME} PROPERTY FOLDER "WinPR")
+
+if(BUILD_TESTING)
+	add_subdirectory(test)
+endif()
