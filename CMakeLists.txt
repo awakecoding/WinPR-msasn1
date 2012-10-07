@@ -18,8 +18,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8)
+
 project(FreeRDP C)
+
 set(CMAKE_COLOR_MAKEFILE ON)
 
 # Include cmake modules
@@ -171,12 +173,23 @@ if(NOT WIN32)
 	endif()
 endif()
 
+if(WIN32)
+	set(CMAKE_INSTALL_BINDIR ${CMAKE_INSTALL_PREFIX})
+	set(CMAKE_INSTALL_LIBDIR ${CMAKE_INSTALL_PREFIX})
+	set(CMAKE_INSTALL_FULL_LIBDIR ${CMAKE_INSTALL_PREFIX})
+endif()
+
 # Path to put FreeRDP data
 set(FREERDP_DATA_PATH "${CMAKE_INSTALL_PREFIX}/share/freerdp")
 set(FREERDP_KEYMAP_PATH "${FREERDP_DATA_PATH}/keymaps")
 
 # Path to put plugins
-set(FREERDP_PLUGIN_PATH "${CMAKE_INSTALL_FULL_LIBDIR}/freerdp")
+if(WIN32)
+	set(FREERDP_PLUGIN_PATH "${CMAKE_INSTALL_FULL_LIBDIR}")
+else()
+	set(FREERDP_PLUGIN_PATH "${CMAKE_INSTALL_FULL_LIBDIR}/freerdp")
+endif()
+
 set(FREERDP_CLIENT_PLUGIN_PATH "${FREERDP_PLUGIN_PATH}/client")
 set(FREERDP_SERVER_PLUGIN_PATH "${FREERDP_PLUGIN_PATH}/server")
 
